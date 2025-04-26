@@ -5,6 +5,7 @@ import PostSearch from './components/PostSearch';
 // TODO: Exercice 3 - Importer ThemeToggle
 // TODO: Exercice 3 - Importer ThemeProvider et useTheme
 // TODO: Exercice 1 - Importer le hook usePosts
+import usePosts from './hooks/usePosts';
 // TODO: Exercice 2 - Importer le hook useLocalStorage
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
   
   // TODO: Exercice 1 - Utiliser le hook usePosts pour récupérer les posts
   // Exemple: const { posts, loading, error } = usePosts();
-  
+  const {posts, loading, error} = usePosts({searchTerm})
   // TODO: Exercice 2 - Utiliser useLocalStorage pour le mode de défilement
   
   // TODO: Exercice 3 - Utiliser useCallback pour les gestionnaires d'événements
@@ -43,7 +44,7 @@ function App() {
         {/* TODO: Exercice 4 - Ajouter le composant PostDetails */}
         
         {/* TODO: Exercice 1 - Passer les props nécessaires à PostList */}
-        <PostList />
+        <PostList posts={posts} loading={loading} error={error}/>
       </main>
       
       <footer className="pt-3 mt-4 text-center border-top">

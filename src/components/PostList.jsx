@@ -2,6 +2,7 @@ import React from 'react';
 // TODO: Exercice 3 - Importer useTheme
 // TODO: Exercice 4 - Importer useIntersectionObserver
 import LoadingSpinner from './LoadingSpinner';
+import PostDetails from './PostDetails';
 
 /**
  * Composant d'affichage de la liste des posts
@@ -17,6 +18,7 @@ import LoadingSpinner from './LoadingSpinner';
 function PostList({
   posts = [],
   loading = false,
+  error,
   hasMore = false,
   onLoadMore,
   onPostClick,
@@ -40,19 +42,28 @@ function PostList({
       onTagClick(tag);
     }
   };
-  
-  // TODO: Exercice 1 - Gérer le cas où il n'y a pas de posts
-  
+  // TODO: Exercice 1 - Gérer le cas où il n'y a pas de 
+  let content
+  if(posts.length > 0){
+    content = posts.map(post=>(
+      <PostDetails key={post.id} post={post}/>
+    ))
+  }else if(error){
+    content = <p style={{textAlign: 'center', color: "red"}}>{error}</p>
+  }else{
+    content = <p style={{textAlign: 'center', color: "red"}}>Pas de post disponible...</p>
+  }
   return (
     <div className="post-list">
       {/* TODO: Exercice 1 - Afficher la liste des posts */}
-      
+      {!loading && content}
       {/* Afficher le spinner de chargement */}
       {loading && <LoadingSpinner />}
       
       {/* TODO: Exercice 4 - Ajouter la référence pour le défilement infini */}
       
       {/* TODO: Exercice 1 - Ajouter le bouton "Charger plus" pour le mode non-infini */}
+      <button >Charger plus</button>
     </div>
   );
 }

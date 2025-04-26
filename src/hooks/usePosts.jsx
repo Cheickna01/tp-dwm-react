@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 // TODO: Exercice 2 - Importer useDebounce
 
 /**
@@ -10,44 +10,64 @@ import { useState, useEffect } from 'react';
  * @param {boolean} options.infinite - Mode de chargement infini vs pagination
  * @returns {Object} État et fonctions pour gérer les posts
  */
-function usePosts({ searchTerm = '', tag = '', limit = 10, infinite = true } = {}) {
+function usePosts({
+  searchTerm = "",
+  tag = "love",
+  limit = 10,
+  infinite = true,
+} = {}) {
   // État local pour les posts
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // TODO: Exercice 1 - Ajouter les états nécessaires pour la pagination
   
   // TODO: Exercice 4 - Ajouter l'état pour le post sélectionné
-  
+
   // TODO: Exercice 2 - Utiliser useDebounce pour le terme de recherche
-  
+
   // TODO: Exercice 3 - Utiliser useCallback pour construire l'URL de l'API
   const buildApiUrl = (skip = 0) => {
     // Construire l'URL en fonction des filtres
-    return 'https://dummyjson.com/posts';
+    return `https://dummyjson.com/posts/search?q=${searchTerm}&tag/${tag}&limit=${limit}&skip=${skip}`;
   };
-  
+
   // TODO: Exercice 1 - Implémenter la fonction pour charger les posts
   const fetchPosts = async (reset = false) => {
     try {
       setLoading(true);
-      // Appeler l'API et mettre à jour les états
+      fetch(buildApiUrl())
+        .then((req) => {
+          if (!req.ok) {
+            console.log("first")
+            setLoading(false);
+            throw new Error("Une erreur est survenue...");
+          }
+          return req.json();
+        })
+        .then((res) => {
+          setPosts(res.posts);
+          setLoading(false);
+        }).catch(e=>{
+          setPosts([])
+          setError(e.message)
+        })
     } catch (err) {
+      setPosts([])
       setError(err.message);
-    } finally {
-      setLoading(false);
     }
   };
-  
+
   // TODO: Exercice 1 - Utiliser useEffect pour charger les posts quand les filtres changent
-  
+  useEffect(() => {
+    fetchPosts();
+  }, [buildApiUrl()]);
   // TODO: Exercice 4 - Implémenter la fonction pour charger plus de posts
-  
+
   // TODO: Exercice 3 - Utiliser useMemo pour calculer les tags uniques
-  
+console.log(buildApiUrl())
   // TODO: Exercice 4 - Implémenter la fonction pour charger un post par son ID
-  
   return {
     posts,
     loading,
