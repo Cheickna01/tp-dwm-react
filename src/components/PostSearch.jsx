@@ -46,6 +46,7 @@ function PostSearch({
               aria-label="Rechercher"
             />
             {/* TODO: Exercice 1 - Ajouter le bouton pour effacer la recherche */}
+            
           </div>
         </div>
         

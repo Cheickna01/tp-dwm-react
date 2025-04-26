@@ -54,7 +54,9 @@ Pour chaque exercice :
 
 _Votre réponse pour l'exercice 1 :_
 ```
-Expliquez votre solution ici
+J'ai construit l'url de l'api avec limit, skip, tag et searchTerm. ensuite j'ai fait l'appel de l'api dans la constante fetchPost, tout en gérant les erreurs et le chargement. Après cela j'ai appélé fetchPosts dans un useEffect à qui j'ai donné comme dépendance buildApiUrl, en conséquence à chaque fois que les filtres changent, donc l'url change et bien sur le useEffect s'exécute une nouvelle fois. j'ai affiché la liste des posts chargés, si il y'a des erreurs j'affiche le message d'erreur.
+![Aperçu de l'application](/assets/capture1.mp4)
+
 [Ajoutez vos captures d'écran]
 ```
 

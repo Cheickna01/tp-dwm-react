@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
  */
 function usePosts({
   searchTerm = "",
-  tag = "love",
+  tag = "",
   limit = 10,
   infinite = true,
 } = {}) {
@@ -49,6 +49,7 @@ function usePosts({
         .then((res) => {
           setPosts(res.posts);
           setLoading(false);
+          setError(null)
         }).catch(e=>{
           setPosts([])
           setError(e.message)
@@ -66,12 +67,12 @@ function usePosts({
   // TODO: Exercice 4 - Implémenter la fonction pour charger plus de posts
 
   // TODO: Exercice 3 - Utiliser useMemo pour calculer les tags uniques
-console.log(buildApiUrl())
   // TODO: Exercice 4 - Implémenter la fonction pour charger un post par son ID
   return {
     posts,
     loading,
     error,
+    infinite
     // Retourner les autres états et fonctions
   };
 }

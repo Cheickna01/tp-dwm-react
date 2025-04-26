@@ -15,7 +15,7 @@ function App() {
   
   // TODO: Exercice 1 - Utiliser le hook usePosts pour récupérer les posts
   // Exemple: const { posts, loading, error } = usePosts();
-  const {posts, loading, error} = usePosts({searchTerm})
+  const {posts, loading, error, infinite} = usePosts({searchTerm})
   // TODO: Exercice 2 - Utiliser useLocalStorage pour le mode de défilement
   
   // TODO: Exercice 3 - Utiliser useCallback pour les gestionnaires d'événements
@@ -40,11 +40,11 @@ function App() {
         <PostSearch onSearch={handleSearchChange} />
         
         {/* TODO: Exercice 1 - Afficher un message d'erreur si nécessaire */}
-        
+        {error && <p style={{textAlign: 'center', color: "red"}}>{error}</p>}
         {/* TODO: Exercice 4 - Ajouter le composant PostDetails */}
         
         {/* TODO: Exercice 1 - Passer les props nécessaires à PostList */}
-        <PostList posts={posts} loading={loading} error={error}/>
+        <PostList posts={posts} loading={loading} error={error} infiniteScroll={infinite}/>
       </main>
       
       <footer className="pt-3 mt-4 text-center border-top">

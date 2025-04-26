@@ -48,9 +48,7 @@ function PostList({
     content = posts.map(post=>(
       <PostDetails key={post.id} post={post}/>
     ))
-  }else if(error){
-    content = <p style={{textAlign: 'center', color: "red"}}>{error}</p>
-  }else{
+  }else if(posts.length === 0) {
     content = <p style={{textAlign: 'center', color: "red"}}>Pas de post disponible...</p>
   }
   return (
@@ -63,7 +61,7 @@ function PostList({
       {/* TODO: Exercice 4 - Ajouter la référence pour le défilement infini */}
       
       {/* TODO: Exercice 1 - Ajouter le bouton "Charger plus" pour le mode non-infini */}
-      <button >Charger plus</button>
+      <button onClick={()=>infiniteScroll=true}>Charger plus</button>
     </div>
   );
 }
