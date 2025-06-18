@@ -3,34 +3,51 @@ import "./App.css";
 import PostList from "./components/PostList";
 import PostSearch from "./components/PostSearch";
 import usePosts from "./hooks/usePosts";
+import useLocalStorage from "./hooks/useLocalStorage"; // Import du hook useLocalStorage
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { posts, loading, error } = usePosts({ searchTerm }); // Passer searchTerm au hook usePosts
+  const [scrollMode, setScrollMode] = useLocalStorage("scrollMode", "infinite"); // Utilisation du hook useLocalStorage
+
+  const { posts, loading, error } = usePosts({
+    searchTerm,
+    infinite: scrollMode === "infinite",
+  });
 
   const handleSearchChange = (term) => {
     setSearchTerm(term);
   };
 
+  const handleScrollModeChange = (mode) => {
+    setScrollMode(mode);
+  };
+
   return (
     <div className="container py-4">
-      <header className="pb-3 mb-4 border-bottom">
-        <div className="d-flex justify-content-between align-items-center">
-          <h1 className="display-5 fw-bold">Blog</h1>
-        </div>
-      </header>
+      <header className="pb-3 mb-4 border-bottom">{/* ... */}</header>
 
       <main>
         <PostSearch onSearch={handleSearchChange} />
-
-        {error && <p style={{ textAlign: "center", color: "red" }}>{error}</p>}
-        {/* Passer les props au PostList */}
-        <PostList posts={posts} loading={loading} error={error} />
+        {/* ... */}
+        <PostList
+          posts={posts}
+          loading={loading}
+          error={error}
+          infiniteScroll={scrollMode === "infinite"}
+        />
       </main>
 
-      <footer className="pt-3 mt-4 text-center border-top">
-        <p>TP React Hooks - Blog &middot; {new Date().getFullYear()}</p>
-      </footer>
+      {/* Boutons pour changer le mode de défilement */}
+      <div>
+        <button onClick={() => handleScrollModeChange("infinite")}>
+          Mode Infini
+        </button>
+        <button onClick={() => handleScrollModeChange("paginated")}>
+          Mode Pagination
+        </button>
+      </div>
+
+      {/* ... */}
     </div>
   );
 }

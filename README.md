@@ -96,9 +96,23 @@ Un bouton pour effacer la recherche a été ajouté, ce qui réinitialise search
 _Votre réponse pour l'exercice 2 :_
 
 ```
-Expliquez votre solution ici
-[Ajoutez vos captures d'écran]
+Cet exercice se concentre sur la création de hooks personnalisés réutilisables.
+
+useDebounce Hook :
+
+Ce hook prend une valeur et un délai comme arguments.
+Il utilise useState pour stocker la valeur "débouncée".
+useEffect est utilisé pour mettre à jour la valeur "débouncée" après un délai spécifié. Si la valeur change pendant le délai, le timer est réinitialisé.
+Ce hook retourne la valeur "débouncée".
+useLocalStorage Hook :
+
+Ce hook prend une clé et une valeur initiale comme arguments.
+Il utilise useState pour stocker la valeur depuis le localStorage. Si la clé n'existe pas, il utilise la valeur initiale.
+useEffect est utilisé pour mettre à jour le localStorage chaque fois que la valeur change.
+Ce hook retourne la valeur et une fonction pour la mettre à jour.
 ```
+![Démo de mon application](./screenshots/cap1.gif)
+
 
 ### Exercice 3 : Optimisation et Context
 

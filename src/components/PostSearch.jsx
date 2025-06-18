@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import useDebounce from "../hooks/useDebounce"; // Import du hook useDebounce
 
 function PostSearch({
   onSearch,
   // Les props onTagSelect, availableTags, selectedTag
   // seront utilisées dans les exercices futurs
 }) {
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearchTerm = useDebounce(searchInput, 300); // Utilisation du hook useDebounce
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -14,9 +16,13 @@ function PostSearch({
   };
 
   const handleClearSearch = () => {
-    setSearchInput('');
-    onSearch(''); // Réinitialise la recherche
+    setSearchInput("");
+    onSearch(""); // Réinitialise la recherche
   };
+  // useEffect pour effectuer la recherche après le délai de debounce
+  useEffect(() => {
+    onSearch(debouncedSearchTerm);
+  }, [debouncedSearchTerm, onSearch]);
 
   return (
     <div className="mb-4">
