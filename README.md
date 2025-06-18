@@ -82,6 +82,8 @@ Un bouton pour effacer la recherche a été ajouté, ce qui réinitialise search
 
 ```
 
+![Démo de mon application](./screenshots/cap1.gif)
+
 ### Exercice 2 : Hooks Personnalisés
 
 #### Objectif : Créer des hooks réutilisables
