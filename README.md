@@ -5,12 +5,14 @@ Ce TP a pour objectif de mettre en pratique l'utilisation des Hooks React (useSt
 ## Installation et configuration initiale
 
 1. Cloner le dépôt :
+
 ```bash
 git clone https://github.com/pr-daaif/tp-react-hooks-blog.git
 cd tp-react-hooks-blog
 ```
 
 2. Créer votre propre dépôt sur Github et changer le remote :
+
 ```bash
 # Supprimer le remote origine
 git remote remove origin
@@ -23,11 +25,13 @@ git push -u origin main
 ```
 
 3. Installer les dépendances :
+
 ```bash
 npm install
 ```
 
 4. Lancer l'application :
+
 ```bash
 npm start
 ```
@@ -35,6 +39,7 @@ npm start
 ## Instructions pour le TP
 
 Pour chaque exercice :
+
 1. Lisez attentivement l'énoncé
 2. Implémentez la solution
 3. Testez votre implémentation (pensez à faire des copies d'écran)
@@ -44,7 +49,8 @@ Pour chaque exercice :
    - Les difficultés rencontrées et comment vous les avez résolues
 5. Commitez vos changements avec un message descriptif
 
-### Exercice 1 : État et Effets 
+### Exercice 1 : État et Effets
+
 #### Objectif : Implémenter l'affichage et la recherche de posts
 
 - [ ] 1.1 Compléter le hook `usePosts` pour récupérer les posts depuis l'API dummyjson.com
@@ -53,13 +59,31 @@ Pour chaque exercice :
 - [ ] 1.4 Documenter votre solution ici
 
 _Votre réponse pour l'exercice 1 :_
-```
-J'ai construit l'url de l'api avec limit, skip, tag et searchTerm. ensuite j'ai fait l'appel de l'api dans la constante fetchPost, tout en gérant les erreurs et le chargement. Après cela j'ai appélé fetchPosts dans un useEffect à qui j'ai donné comme dépendance buildApiUrl, en conséquence à chaque fois que les filtres changent, donc l'url change et bien sur le useEffect s'exécute une nouvelle fois. j'ai affiché la liste des posts chargés, si il y'a des erreurs j'affiche le message d'erreur.
 
-![Aperçu de l'application](./assets/capture1.gif)
+```
+usePosts Hook :
+
+J'ai complété le hook usePosts pour récupérer les données de l'API https://dummyjson.com/posts/search.
+L'URL de l'API est construite dynamiquement en utilisant le searchTerm passé en argument, permettant ainsi la fonctionnalité de recherche.
+Les états posts, loading, et error sont gérés pour fournir un feedback à l'utilisateur sur l'état du chargement des données.
+Un useEffect est utilisé pour déclencher la fonction fetchPosts chaque fois que le searchTerm change.
+PostList Composant :
+
+Le composant PostList reçoit les posts, loading, et error comme props.
+Il affiche un LoadingSpinner pendant le chargement des données.
+En cas d'erreur (error n'est pas null), un message d'erreur est affiché.
+Si aucun post n'est trouvé après la recherche, un message "Pas de post disponible..." est affiché.
+Chaque post est rendu à l'aide du composant PostDetails (qui sera complété dans l'exercice 4).
+PostSearch Composant :
+
+Le composant PostSearch gère l'input de recherche et appelle la fonction onSearch (passée via les props) à chaque modification de l'input.
+Un état local searchInput est utilisé pour contrôler la valeur de l'input.
+Un bouton pour effacer la recherche a été ajouté, ce qui réinitialise searchInput et appelle onSearch avec une chaîne vide.
+
 ```
 
 ### Exercice 2 : Hooks Personnalisés
+
 #### Objectif : Créer des hooks réutilisables
 
 - [ ] 2.1 Créer le hook `useDebounce` pour optimiser la recherche
@@ -68,12 +92,14 @@ J'ai construit l'url de l'api avec limit, skip, tag et searchTerm. ensuite j'ai 
 - [ ] 2.4 Documenter votre solution ici
 
 _Votre réponse pour l'exercice 2 :_
+
 ```
 Expliquez votre solution ici
 [Ajoutez vos captures d'écran]
 ```
 
 ### Exercice 3 : Optimisation et Context
+
 #### Objectif : Gérer le thème global et optimiser les rendus
 
 - [ ] 3.1 Créer le `ThemeContext` pour gérer le thème clair/sombre
@@ -82,12 +108,14 @@ Expliquez votre solution ici
 - [ ] 3.4 Documenter votre solution ici
 
 _Votre réponse pour l'exercice 3 :_
+
 ```
 Expliquez votre solution ici
 [Ajoutez vos captures d'écran]
 ```
 
 ### Exercice 4 : Fonctionnalités avancées
+
 #### Objectif : Ajouter des fonctionnalités de chargement et détail
 
 - [ ] 4.1 Implémenter le chargement infini des posts avec `useIntersectionObserver`
@@ -96,6 +124,7 @@ Expliquez votre solution ici
 - [ ] 4.4 Documenter votre solution ici
 
 _Votre réponse pour l'exercice 4 :_
+
 ```
 Expliquez votre solution ici
 [Ajoutez vos captures d'écran]
@@ -151,17 +180,20 @@ Pour réaliser ce TP, vous utiliserez l'API dummyjson.com qui fournit des donné
 ## Points d'entrée API
 
 ### Récupérer tous les posts
+
 ```
 GET https://dummyjson.com/posts
 ```
 
 Paramètres de requête optionnels :
+
 - `limit` : nombre de posts à récupérer (défaut: 30)
 - `skip` : nombre de posts à sauter (pour la pagination)
 
 Exemple : `https://dummyjson.com/posts?limit=10&skip=10`
 
 ### Récupérer un post spécifique
+
 ```
 GET https://dummyjson.com/posts/{id}
 ```
@@ -169,6 +201,7 @@ GET https://dummyjson.com/posts/{id}
 Exemple : `https://dummyjson.com/posts/1`
 
 ### Rechercher des posts
+
 ```
 GET https://dummyjson.com/posts/search?q={terme}
 ```
@@ -176,6 +209,7 @@ GET https://dummyjson.com/posts/search?q={terme}
 Exemple : `https://dummyjson.com/posts/search?q=love`
 
 ### Récupérer les posts par tag
+
 ```
 GET https://dummyjson.com/posts/tag/{tag}
 ```

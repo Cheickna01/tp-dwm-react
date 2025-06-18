@@ -1,16 +1,10 @@
 import React from 'react';
-// TODO: Exercice 3 - Importer useTheme
 
-/**
- * Composant d'indicateur de chargement
- */
 function LoadingSpinner() {
-  // TODO: Exercice 3 - Utiliser le hook useTheme
-  
   return (
     <div className="d-flex justify-content-center my-4">
-      <div 
-        className="spinner-border" 
+      <div
+        className="spinner-border text-primary" // Ajout de la classe text-primary pour la couleur
         role="status"
       >
         <span className="visually-hidden">Chargement...</span>

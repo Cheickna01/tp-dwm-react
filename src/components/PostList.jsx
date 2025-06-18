@@ -1,70 +1,37 @@
 import React from 'react';
-// TODO: Exercice 3 - Importer useTheme
-// TODO: Exercice 4 - Importer useIntersectionObserver
 import LoadingSpinner from './LoadingSpinner';
-import PostDetails from './PostDetails';
+import PostDetails from './PostDetails'; // Nous allons l'utiliser comme un simple "card" pour l'instant
 
-/**
- * Composant d'affichage de la liste des posts
- * @param {Object} props - Propriétés du composant
- * @param {Array} props.posts - Liste des posts à afficher
- * @param {boolean} props.loading - Indicateur de chargement
- * @param {boolean} props.hasMore - Indique s'il y a plus de posts à charger
- * @param {Function} props.onLoadMore - Fonction pour charger plus de posts
- * @param {Function} props.onPostClick - Fonction appelée au clic sur un post
- * @param {Function} props.onTagClick - Fonction appelée au clic sur un tag
- * @param {boolean} props.infiniteScroll - Mode de défilement infini activé ou non
- */
 function PostList({
   posts = [],
   loading = false,
   error,
-  hasMore = false,
-  onLoadMore,
-  onPostClick,
-  onTagClick,
-  infiniteScroll = true
+  // Les props hasMore, onLoadMore, onPostClick, onTagClick, infiniteScroll
+  // seront utilisées dans les exercices futurs
 }) {
-  // TODO: Exercice 3 - Utiliser le hook useTheme
-  
-  // TODO: Exercice 4 - Utiliser useIntersectionObserver pour le défilement infini
-  
-  // TODO: Exercice 3 - Utiliser useCallback pour les gestionnaires d'événements
-  const handlePostClick = (post) => {
-    if (onPostClick) {
-      onPostClick(post);
-    }
-  };
-  
-  const handleTagClick = (e, tag) => {
-    e.stopPropagation(); // Éviter de déclencher le clic sur le post
-    if (onTagClick) {
-      onTagClick(tag);
-    }
-  };
-  // TODO: Exercice 1 - Gérer le cas où il n'y a pas de 
-  let content
-  if(posts.length > 0){
-    content = posts.map(post=>(
-      <PostDetails key={post.id} post={post}/>
-    ))
-  }else if(posts.length === 0) {
-    content = <p style={{textAlign: 'center', color: "red"}}>Pas de post disponible...</p>
+  let content;
+
+  if (loading) {
+    content = <LoadingSpinner />;
+  } else if (error) {
+    // Le message d'erreur est déjà géré dans App.js, mais on peut le mettre ici aussi
+    content = <p style={{ textAlign: 'center', color: "red" }}>{error}</p>;
+  } else if (posts.length > 0) {
+    content = posts.map(post => (
+      // Pour l'exercice 1, PostDetails servira de simple carte d'affichage.
+      // Le détail complet et la gestion du clic seront implémentés plus tard.
+      <PostDetails key={post.id} post={post} />
+    ));
+  } else {
+    content = <p style={{ textAlign: 'center', color: "gray" }}>Aucun post trouvé.</p>;
   }
+
   return (
     <div className="post-list">
-      {/* TODO: Exercice 1 - Afficher la liste des posts */}
-      {!loading && content}
-      {/* Afficher le spinner de chargement */}
-      {loading && <LoadingSpinner />}
-      
-      {/* TODO: Exercice 4 - Ajouter la référence pour le défilement infini */}
-      
-      {/* TODO: Exercice 1 - Ajouter le bouton "Charger plus" pour le mode non-infini */}
-      <button onClick={()=>infiniteScroll=true}>Charger plus</button>
+      {content}
+      {/* Les boutons de chargement et l'infinite scroll seront ajoutés plus tard */}
     </div>
   );
 }
 
-// TODO: Exercice 3 - Utiliser React.memo pour optimiser les rendus
 export default PostList;

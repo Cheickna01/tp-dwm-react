@@ -1,79 +1,58 @@
-import { useState, useEffect } from "react";
-// TODO: Exercice 2 - Importer useDebounce
+import { useState, useEffect, useCallback } from "react"; // Importer useCallback
 
-/**
- * Hook personnalisé pour gérer les posts du blog
- * @param {Object} options - Options de configuration
- * @param {string} options.searchTerm - Terme de recherche
- * @param {string} options.tag - Tag à filtrer
- * @param {number} options.limit - Nombre d'éléments par page
- * @param {boolean} options.infinite - Mode de chargement infini vs pagination
- * @returns {Object} État et fonctions pour gérer les posts
- */
 function usePosts({
   searchTerm = "",
   tag = "",
   limit = 10,
-  infinite = true,
+  infinite = true, // Conserver pour les exercices futurs
 } = {}) {
-  // État local pour les posts
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // TODO: Exercice 1 - Ajouter les états nécessaires pour la pagination
-  
-  // TODO: Exercice 4 - Ajouter l'état pour le post sélectionné
+  // Utiliser useCallback pour mémoriser buildApiUrl
+  const buildApiUrl = useCallback(() => {
+    // La recherche se fait via le paramètre 'q' pour la recherche globale
+    // et '/tags' pour la recherche par tag spécifique.
+    // Pour cet exercice 1, nous nous concentrons sur la recherche par 'q'.
+    let url = `https://dummyjson.com/posts/search?q=${searchTerm}`;
+    // Les paramètres tag, limit, skip seront gérés dans les exercices futurs
+    // if (tag) url = `https://dummyjson.com/posts/tag/${tag}`;
+    // url += `&limit=${limit}&skip=${skip}`;
+    return url;
+  }, [searchTerm]); // Reconstruire l'URL seulement si searchTerm change
 
-  // TODO: Exercice 2 - Utiliser useDebounce pour le terme de recherche
-
-  // TODO: Exercice 3 - Utiliser useCallback pour construire l'URL de l'API
-  const buildApiUrl = (skip = 0) => {
-    // Construire l'URL en fonction des filtres
-    return `https://dummyjson.com/posts/search?q=${searchTerm}&tag/${tag}&limit=${limit}&skip=${skip}`;
-  };
-
-  // TODO: Exercice 1 - Implémenter la fonction pour charger les posts
-  const fetchPosts = async (reset = false) => {
+  const fetchPosts = async () => {
     try {
       setLoading(true);
-      fetch(buildApiUrl())
-        .then((req) => {
-          if (!req.ok) {
-            console.log("first")
-            setLoading(false);
-            throw new Error("Une erreur est survenue...");
-          }
-          return req.json();
-        })
-        .then((res) => {
-          setPosts(res.posts);
-          setLoading(false);
-          setError(null)
-        }).catch(e=>{
-          setPosts([])
-          setError(e.message)
-        })
+      setError(null); // Réinitialiser l'erreur avant chaque nouvelle requête
+
+      const response = await fetch(buildApiUrl());
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setPosts(data.posts);
     } catch (err) {
-      setPosts([])
+      console.error("Erreur lors de la récupération des posts:", err);
+      setPosts([]); // Vider les posts en cas d'erreur
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // TODO: Exercice 1 - Utiliser useEffect pour charger les posts quand les filtres changent
   useEffect(() => {
     fetchPosts();
-  }, [buildApiUrl()]);
-  // TODO: Exercice 4 - Implémenter la fonction pour charger plus de posts
+  }, [buildApiUrl]); // Déclencher la recherche quand l'URL de l'API change
 
-  // TODO: Exercice 3 - Utiliser useMemo pour calculer les tags uniques
-  // TODO: Exercice 4 - Implémenter la fonction pour charger un post par son ID
   return {
     posts,
     loading,
     error,
-    infinite
-    // Retourner les autres états et fonctions
+    infinite // À conserver pour les futurs exercices
   };
 }
 
