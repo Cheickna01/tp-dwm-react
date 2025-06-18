@@ -158,9 +158,27 @@ React.memo est utilisé pour optimiser les rendus des composants, en évitant de
 _Votre réponse pour l'exercice 4 :_
 
 ```
-Expliquez votre solution ici
-[Ajoutez vos captures d'écran]
+Cet exercice se concentre sur l'ajout de fonctionnalités avancées : chargement infini, détails des posts, et filtrage par tags.
+
+useIntersectionObserver Hook :
+
+Ce hook détecte quand un élément devient visible dans le viewport.
+Il utilise IntersectionObserver pour observer un élément cible.
+Il retourne une référence à l'élément à observer et un état indiquant si l'élément est visible.
+PostDetails Composant :
+
+Ce composant affiche les détails complets d'un post, y compris le contenu, les réactions, l'utilisateur, et les tags.
+Il permet de fermer les détails et de filtrer les posts par tag.
+Chargement infini :
+
+Le hook useIntersectionObserver est utilisé pour détecter quand l'utilisateur atteint la fin de la liste des posts.
+Quand la fin de la liste est atteinte, une fonction est appelée pour charger plus de posts.
+Filtrage par tags :
+
+Un sélecteur de tags est ajouté au composant PostSearch.
+Quand un tag est sélectionné, une fonction est appelée pour filtrer les posts par ce tag.
 ```
+![Démo de mon application](./screenshots/cap3.png)
 
 ## Structure détaillée du projet
 

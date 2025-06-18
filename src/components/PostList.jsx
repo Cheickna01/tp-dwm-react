@@ -3,14 +3,43 @@ import PostDetails from "./PostDetails";
 import React, { memo } from "react"; // Import de memo
 import { useTheme } from "../context/ThemeContext";
 import { useMemo } from "react";
+import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import { useCallback } from "react";
 
 function PostList({
   posts = [],
   loading = false,
   error,
-  // Les props hasMore, onLoadMore, onPostClick, onTagClick, infiniteScroll
-  // seront utilisées dans les exercices futurs
+  hasMore = false,
+  onLoadMore,
+  onPostClick,
+  onTagClick,
+  infiniteScroll = true,
 }) {
+  const [selectedPost, setSelectedPost] = React.useState(null);
+  const [loadMoreRef, isIntersecting] = useIntersectionObserver({
+    enabled: infiniteScroll,
+  });
+  const handlePostClick = useCallback((post) => {
+    setSelectedPost(post);
+  }, []);
+
+  const handleTagClick = useCallback(
+    (tag) => {
+      if (onTagClick) {
+        onTagClick(tag);
+      }
+    },
+    [onTagClick]
+  );
+
+  // Charger plus de posts quand l'élément observé est visible
+  React.useEffect(() => {
+    if (isIntersecting && hasMore && !loading && infiniteScroll) {
+      onLoadMore();
+    }
+  }, [isIntersecting, hasMore, loading, onLoadMore, infiniteScroll]);
+
   let content;
 
   if (loading) {
@@ -20,9 +49,12 @@ function PostList({
     content = <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
   } else if (posts.length > 0) {
     content = posts.map((post) => (
-      // Pour l'exercice 1, PostDetails servira de simple carte d'affichage.
-      // Le détail complet et la gestion du clic seront implémentés plus tard.
-      <PostDetails key={post.id} post={post} />
+      <PostDetails
+        key={post.id}
+        post={post}
+        onClose={selectedPost ? () => setSelectedPost(null) : null}
+        onTagClick={handleTagClick}
+      />
     ));
   } else {
     content = (
@@ -42,7 +74,18 @@ function PostList({
   return (
     <div className={`post-list ${themeClasses.card}`}>
       {content}
-      {/* Les boutons de chargement et l'infinite scroll seront ajoutés plus tard */}
+      {/* Afficher le spinner de chargement seulement s'il y a plus de posts à charger */}
+      {loading && posts.length > 0 && <LoadingSpinner />}
+
+      {/* Élément à observer pour le chargement infini */}
+      {infiniteScroll && <div ref={loadMoreRef} />}
+
+      {/* Bouton "Charger plus" pour le mode non-infini */}
+      {!infiniteScroll && hasMore && (
+        <button onClick={onLoadMore} disabled={loading}>
+          {loading ? "Chargement..." : "Charger plus"}
+        </button>
+      )}
     </div>
   );
 }

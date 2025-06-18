@@ -1,30 +1,36 @@
-import useDebounce from "../hooks/useDebounce";
 import React, { useState, useCallback, useEffect, memo } from "react";
+import useDebounce from "../hooks/useDebounce";
 import { useTheme } from "../context/ThemeContext";
 
 function PostSearch({
   onSearch,
-  // Les props onTagSelect, availableTags, selectedTag
-  // seront utilisées dans les exercices futurs
+  onTagSelect,
+  availableTags = [],
+  selectedTag = "",
 }) {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearchTerm = useDebounce(searchInput, 300);
   const { theme } = useTheme();
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchInput(value);
-    onSearch(value); // Appelle la fonction onSearch passée par App.js
-  };
+  const handleSearchChange = useCallback((e) => {
+    setSearchInput(e.target.value);
+  }, []);
 
+  useEffect(() => {
+    onSearch(debouncedSearchTerm);
+  }, [debouncedSearchTerm, onSearch]);
+
+  const handleTagChange = useCallback(
+    (e) => {
+      onTagSelect(e.target.value);
+    },
+    [onTagSelect]
+  );
   const handleClearSearch = () => {
     setSearchInput("");
     onSearch(""); // Réinitialise la recherche
   };
-  // useEffect pour effectuer la recherche après le délai de debounce
-  useEffect(() => {
-    onSearch(debouncedSearchTerm);
-  }, [debouncedSearchTerm, onSearch]);
+
   const themeClasses = theme === "light" ? "bg-light" : "bg-dark text-white";
 
   return (
@@ -55,6 +61,22 @@ function PostSearch({
               </button>
             )}
           </div>
+        </div>
+
+        {/* Sélecteur de tags */}
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={selectedTag}
+            onChange={handleTagChange}
+          >
+            <option value="">Tous les tags</option>
+            {availableTags.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     </div>
