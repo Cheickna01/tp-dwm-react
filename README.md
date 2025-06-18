@@ -126,9 +126,25 @@ Ce hook retourne la valeur et une fonction pour la mettre à jour.
 _Votre réponse pour l'exercice 3 :_
 
 ```
-Expliquez votre solution ici
-[Ajoutez vos captures d'écran]
+Cet exercice se concentre sur la gestion du thème global et l'optimisation des rendus.
+
+ThemeContext :
+
+J'ai créé un contexte ThemeContext pour gérer le thème clair/sombre de l'application.
+Un ThemeProvider est utilisé pour fournir le contexte à toute l'application.
+Le ThemeProvider utilise le hook useLocalStorage (de l'exercice 2) pour persister le thème choisi par l'utilisateur.
+Un hook personnalisé useTheme est créé pour faciliter l'accès au contexte.
+ThemeToggle :
+
+Ce composant permet à l'utilisateur de basculer entre les thèmes clair et sombre.
+Il utilise le hook useTheme pour accéder au thème actuel et à la fonction pour le changer.
+useCallback et useMemo :
+
+useCallback est utilisé pour mémoriser les fonctions de gestion d'événements, évitant ainsi de recréer ces fonctions à chaque rendu.
+useMemo est utilisé pour mémoriser les valeurs calculées, évitant ainsi de recalculer ces valeurs à chaque rendu.
+React.memo est utilisé pour optimiser les rendus des composants, en évitant de re-rendre les composants si leurs props n'ont pas changé.
 ```
+![Démo de mon application](./screenshots/cap2.gif)
 
 ### Exercice 4 : Fonctionnalités avancées
 

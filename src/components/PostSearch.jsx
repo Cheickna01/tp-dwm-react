@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import useDebounce from "../hooks/useDebounce"; // Import du hook useDebounce
+import useDebounce from "../hooks/useDebounce";
+import React, { useState, useCallback, useEffect, memo } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 function PostSearch({
   onSearch,
@@ -7,7 +8,8 @@ function PostSearch({
   // seront utilisées dans les exercices futurs
 }) {
   const [searchInput, setSearchInput] = useState("");
-  const debouncedSearchTerm = useDebounce(searchInput, 300); // Utilisation du hook useDebounce
+  const debouncedSearchTerm = useDebounce(searchInput, 300);
+  const { theme } = useTheme();
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -23,9 +25,10 @@ function PostSearch({
   useEffect(() => {
     onSearch(debouncedSearchTerm);
   }, [debouncedSearchTerm, onSearch]);
+  const themeClasses = theme === "light" ? "bg-light" : "bg-dark text-white";
 
   return (
-    <div className="mb-4">
+    <div className={`mb-4`}>
       <div className="row">
         <div className="col-md-8 mb-3 mb-md-0">
           <div className="input-group">
@@ -58,4 +61,4 @@ function PostSearch({
   );
 }
 
-export default PostSearch;
+export default memo(PostSearch);

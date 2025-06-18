@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 /**
  * Hook personnalisé pour débouncer une valeur
@@ -8,6 +8,14 @@ import { useState, useEffect } from 'react';
  */
 function useDebounce(value, delay = 500) {
   const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(timer); // Nettoyer le timer si la valeur change ou si le composant est démonté
+  }, [value, delay]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

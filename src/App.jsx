@@ -3,7 +3,10 @@ import "./App.css";
 import PostList from "./components/PostList";
 import PostSearch from "./components/PostSearch";
 import usePosts from "./hooks/usePosts";
-import useLocalStorage from "./hooks/useLocalStorage"; // Import du hook useLocalStorage
+import useLocalStorage from "./hooks/useLocalStorage";
+import { useTheme } from "./context/ThemeContext";
+import { useMemo } from "react";
+import ThemeToggle from "./components/ThemeToggle";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,34 +24,48 @@ function App() {
   const handleScrollModeChange = (mode) => {
     setScrollMode(mode);
   };
-
+  const { theme } = useTheme();
+    const themeClasses = useMemo(() => {
+      return {
+        card: theme === "light" ? "bg-light" : "bg-dark text-white",
+        badge: theme === "light" ? "bg-secondary" : "bg-primary",
+        button:
+          theme === "light" ? "btn-outline-secondary" : "btn-outline-primary",
+      };
+    }, [theme]);
   return (
-    <div className="container py-4">
-      <header className="pb-3 mb-4 border-bottom">{/* ... */}</header>
+      <div className={`container py-4 ${themeClasses.card}`}>
+        <header className="pb-3 mb-4 border-bottom">
+          <div className="d-flex justify-content-between align-items-center">
+            <h1 className="display-5 fw-bold">Blog</h1>
+            <ThemeToggle/>
+          </div>
+        </header>
 
-      <main>
-        <PostSearch onSearch={handleSearchChange} />
-        {/* ... */}
-        <PostList
-          posts={posts}
-          loading={loading}
-          error={error}
-          infiniteScroll={scrollMode === "infinite"}
-        />
-      </main>
+        <main>
+          <PostSearch onSearch={handleSearchChange} />
+          <PostList
+            posts={posts}
+            loading={loading}
+            error={error}
+            infiniteScroll={scrollMode === "infinite"}
+          />
+        </main>
 
-      {/* Boutons pour changer le mode de défilement */}
-      <div>
-        <button onClick={() => handleScrollModeChange("infinite")}>
-          Mode Infini
-        </button>
-        <button onClick={() => handleScrollModeChange("paginated")}>
-          Mode Pagination
-        </button>
+        {/* Boutons pour changer le mode de défilement */}
+        <div>
+          <button onClick={() => handleScrollModeChange("infinite")}>
+            Mode Infini
+          </button>
+          <button onClick={() => handleScrollModeChange("paginated")}>
+            Mode Pagination
+          </button>
+        </div>
+
+        <footer className="pt-3 mt-4 text-center border-top">
+          <p>TP React Hooks - Blog &middot; {new Date().getFullYear()}</p>
+        </footer>
       </div>
-
-      {/* ... */}
-    </div>
   );
 }
 
